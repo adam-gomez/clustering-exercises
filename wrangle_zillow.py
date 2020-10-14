@@ -61,6 +61,14 @@ def handle_missing_values(df, prop_required_column = .5, prop_required_row = .75
     df.dropna(axis=0, thresh=threshold, inplace=True)
     return df
 
+def map_county(row):
+    if row['fips'] == 6037:
+        return 'Los Angeles'
+    elif row['fips'] == 6059:
+        return 'Orange'
+    elif row['fips'] == 6111:
+        return 'Ventura'
+
 def wrangle_zillow(df):
 	df = df[(df.propertylandusedesc == 'Single Family Residential')|(df.propertylandusedesc == 'Condominium')|(df.propertylandusedesc == 'Planned Unit Development')|(df.propertylandusedesc == 'Mobile Home')|(df.propertylandusedesc == 'Manufactured, Modular, Prefabricated Homes')|(df.propertylandusedesc == 'Residential General')]
 	df = df[df.bedroomcnt > 0]
@@ -72,6 +80,7 @@ def wrangle_zillow(df):
 	columns_to_change = ['id', 'parcelid', 'fips', 'heatingorsystemtypeid', 'propertylandusetypeid', 'rawcensustractandblock', 'regionidcounty', 'regionidzip', 'censustractandblock']
 	for column in columns_to_change:
 		df[column] = df[column].astype(object)
+	df['fips'] = df.apply(lambda row: map_county(row), axis = 1)
 	return df
 
 def split_impute_zillow(df, pct=0.10):
