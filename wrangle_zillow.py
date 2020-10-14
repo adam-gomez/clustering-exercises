@@ -66,7 +66,7 @@ def wrangle_zillow(df):
 	df = df[df.bedroomcnt > 0]
 	df = df[~(df.unitcnt > 1)]
 	handle_missing_values(df)
-	df.drop(columns=['calculatedbathnbr', 'finishedsquarefeet12', 'propertyzoningdesc', 'regionidcity', 'roomcnt', 'unitcnt'], inplace=True)
+	df.drop(columns=['assessmentyear', 'calculatedbathnbr', 'finishedsquarefeet12', 'propertyzoningdesc', 'regionidcity', 'roomcnt', 'unitcnt'], inplace=True)
 	df = df.dropna(subset=['censustractandblock'])
 	df = df.dropna(subset=['regionidzip'])
 	columns_to_change = ['id', 'parcelid', 'fips', 'heatingorsystemtypeid', 'propertylandusetypeid', 'rawcensustractandblock', 'regionidcounty', 'regionidzip', 'censustractandblock']
