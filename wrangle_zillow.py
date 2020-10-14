@@ -69,6 +69,9 @@ def wrangle_zillow(df):
 	df.drop(columns=['calculatedbathnbr', 'finishedsquarefeet12', 'propertyzoningdesc', 'regionidcity', 'roomcnt', 'unitcnt'], inplace=True)
 	df = df.dropna(subset=['censustractandblock'])
 	df = df.dropna(subset=['regionidzip'])
+	columns_to_change = ['id', 'parcelid', 'fips', 'heatingorsystemtypeid', 'propertylandusetypeid', 'rawcensustractandblock', 'regionidcounty', 'regionidzip', 'censustractandblock']
+	for column in columns_to_change:
+		df[column] = df[column].astype(object)
 	return df
 
 def split_impute_zillow(df, pct=0.10):
