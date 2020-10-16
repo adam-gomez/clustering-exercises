@@ -305,3 +305,32 @@ def quantile_scaler(train, validate, test):
     validate_scaled = pd.DataFrame(scaler.transform(validate), columns=validate.columns.values).set_index([validate.index.values])
     test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
     return scaler, train_scaled, validate_scaled, test_scaled
+
+def split_my_data(df, pct=0.10):
+    '''
+    This divides a dataframe into train, validate, and test sets. 
+
+    Parameters - (df, pct=0.10)
+    df = dataframe you wish to split
+    pct = size of the test set, 1/2 of size of the validate set
+
+    Returns three dataframes (train, validate, test)
+    '''
+    train_validate, test = train_test_split(df, test_size=pct, random_state = 123)
+    train, validate = train_test_split(train_validate, test_size=pct*2, random_state = 123)
+    return train, validate, test
+
+def split_stratify_my_data(df, strat, pct=0.10):
+    '''
+    This divides a dataframe into train, validate, and test sets straifying on the selected feature
+
+    Parameters - (df, pct=0.10, stratify)
+    df = dataframe you wish to split
+    pct = size of the test set, 1/2 of size of the validate set
+    stratify = a string of the column name of the feature you wish to stratify on
+
+    Returns three dataframes (train, validate, test)
+    '''
+    train_validate, test = train_test_split(df, test_size=pct, random_state = 123, stratify=df[strat])
+    train, validate = train_test_split(train_validate, test_size=pct*2, random_state = 123, stratify=train_validate[strat])
+    return train, validate, test
